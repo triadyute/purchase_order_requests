@@ -1,0 +1,85 @@
+input[type=search] { 	
+  border: 1px solid #777;  /* Overridden by border: 2px inset; */
+  border-radius: 3px;
+  padding: 5px 5px;
+}
+
+#myTable_wrapper{
+  margin-bottom: 3em;
+}
+
+footer{
+    margin-top: 3em;
+    font-size: .8em;
+}
+
+.dashboard-details{
+    margin-bottom: 3em;
+}
+
+.request-details{
+  margin-bottom: 1em;
+}
+#pobutton{
+    margin-top: 2.1em;
+}
+
+/*Placeholders*/
+::-webkit-input-placeholder {
+    color: #ff0000;
+    font-size: 12px;
+  }
+  ::-moz-placeholder {
+    color: #ff0000;
+    font-size: 12px;
+  }
+  :-ms-input-placeholder {
+    color: #ff0000;
+    font-size: 12px;
+  }
+  ::placeholder {
+    color: #ff0000;
+    font-size: 12px;
+  }
+
+  option{
+    font-size: 12px;
+    font-family: 'Montserrat', sans-serif !important;
+  }
+
+  .service-small select{
+    font-size: 12px;
+    padding: 2px;
+  }
+
+  h1, h2, h3, h4, h5, h6{
+    font-family: 'Work Sans', sans-serif;
+    color: #30415d;
+  }
+
+  label{
+    font-family: 'Work Sans', sans-serif;
+  }
+
+  #viewButton{
+    margin-bottom:1em;
+  }
+
+  .req_date{
+      font-size: .89em;
+  }
+
+  .navbar{
+    background: #062F4F;
+  }
+
+  .btn-primary{
+    border: none !important;
+    background-color: #062F4F !important;
+  }
+
+  .btn-success{
+    border: none !important;
+    background-color: #ccc !important;
+    color: #000 !important;
+  }
