@@ -42,7 +42,12 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
-        $this->middleware('auth');
+    }
+
+    public function showRegistrationForm()
+    {
+        $departments = Department::all();
+        return view('auth.register', compact('departments'));
     }
 
     /**
@@ -53,9 +58,12 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        //dd(request()->all());
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'department_id' => ['required', 'integer'],
+            'job_title' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -68,11 +76,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'department_id' => $data['department_id'],
+            'job_title' => $data['job_title'],
             'password' => Hash::make($data['password']),
         ]);
+        $role = 1;
+        $user->roles()->attach($role);
+        return $user;
     }
 
     public function register(Request $request)
@@ -80,24 +93,10 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
-
         $this->guard()->login($user);
 
         return $this->registered($request, $user)
         // ?: redirect($this->redirectPath());
-                        ?: redirect(route('home'))->with('status', 'User added');
-    }
-
-    public function store(Request $request){
-        return "Hello";
-        $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-
-        $this->guard()->login($user);
-
-        //return $this->registered($request, $user)
-        // ?: redirect($this->redirectPath());
-                        //?: redirect(route('home'))->with('status', 'User added');
+                        ?: redirect(route('home'))->with('status', 'Account created');
     }
 }

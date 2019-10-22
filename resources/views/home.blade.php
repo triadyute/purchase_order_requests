@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h4>Dashboard</h4>
+<h4>Purchase Order Portal Dashboard</h4>
 <hr>
 <h5>Employee info</h5>
 <div class="row dashboard-details">
@@ -16,15 +16,21 @@
         <p><strong>Account created:</strong> <span class="req_date">{{\Carbon\Carbon::parse(Auth::user()->created_at)->toFormattedDateString()}}</span></p>
     </div>
     <div class="col-md-4">
-        <p><strong>Total requests: </strong>{{count($total_requests)}}</p>
-        <p><strong>Approved requests: </strong>{{count($approved_requests)}}</p>
-        <p><strong>Declined requests: </strong>0</p>
+        <p><strong>Total requests: </strong></p>
+        <p><strong>Approved requests: </strong></p>
+        <p><strong>Declined requests: </strong></p>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-6 float-left">
-        <h4>My recent purchase order requests</h4>
+        <h4>
+            @can('view-all-pos', \App\PurchaseOrderRequest::class)
+                Recent purchase order requests
+            @else
+                My recent purchase order requests
+            @endcan
+        </h4>
     </div>
     <div class="col-md-6">
         <a href="{{route('purchase-order-request.index')}}"><span class="float-right"><button class="btn btn-primary btn-sm" id="viewButton"><i class="fa fa-eye"></i> See all requests</button></span></a>
@@ -47,7 +53,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($purchase_order_requests as $po_request)
+                @forelse ($purchase_order_requests as $po_request)
                     <tr>
                         <th scope="row">
                             @if ($po_request->id < 10)
@@ -79,7 +85,13 @@
                             </form>
                         </td>-->
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="8" class="text-center">
+                            No records found
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

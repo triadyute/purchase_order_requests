@@ -23,7 +23,7 @@ class UsersTableSeeder extends Seeder
         $user->roles()->attach($role_user);
         $user->save();
 
-        $manager = factory(User::class)->create(['email' => 'manger@poportal.com', 'department_id' => 1]);
+        $manager = factory(User::class)->create(['email' => 'manager@poportal.com', 'department_id' => 1]);
         $manager->roles()->attach($role_manager);
         $manager->save();
 

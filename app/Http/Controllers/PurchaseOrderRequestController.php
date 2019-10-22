@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\PurchaseOrderRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use App\User;
 use Illuminate\Http\Request;
 use PDF;
@@ -17,8 +19,25 @@ class PurchaseOrderRequestController extends Controller
      */
     public function index()
     {
-        $purchase_order_requests = PurchaseOrderRequest::where('user_id', Auth::user()->id)->get();
-        return view('purchase-order-requests.index' , compact('purchase_order_requests'));
+        $purchase_order_requests = PurchaseOrderRequest::all();
+        if(Gate::allows('view-all-pos', $purchase_order_requests)){
+            return view('purchase-order-requests.index' , compact('purchase_order_requests'));
+        }
+        elseif(Gate::allows('view-my-staff-pos', $purchase_order_requests)){
+            $purchase_order_requests =  PurchaseOrderRequest::join('users', function($u){$u->on('purchase_order_requests.user_id', '=','users.id');})
+            ->where('users.department_id', Auth::user()->department_id)->join('role_user as ru', 'ru.user_id', '=', 'users.id' )
+            ->join('roles', function($r){$r->on('roles.id', '=', 'ru.role_id')->where('roles.name', '=', 'User')
+            ->orWhere('purchase_order_requests.user_id', '=', Auth::user()->id);})->distinct()->get(['purchase_order_requests.*']);
+            return view('purchase-order-requests.index', compact('purchase_order_requests'));
+        }
+        elseif(Gate::allows('view-staff-pos', $purchase_order_requests)){
+            $purchase_order_requests = PurchaseOrderRequest::join('users', function($u){$u->on('purchase_order_requests.user_id', '=', 'users.id');})->where('users.department_id', Auth::user()->department_id)->get(['purchase_order_requests.*']);
+            return view('purchase-order-requests.index', compact('purchase_order_requests'));
+        }
+        else{
+            $purchase_order_requests = PurchaseOrderRequest::where('user_id', Auth::user()->id)->get();
+            return view('purchase-order-requests.index', compact('purchase_order_requests'));
+        }
     }
 
     /**
@@ -28,11 +47,10 @@ class PurchaseOrderRequestController extends Controller
      */
     public function create()
     {
-        $managers = User::whereHas('roles', function($q){
-            $q->where('name', 'Manager');
-        })->get();
-
-        //return $managers[0];
+        // $managers = User::whereHas('roles', function($q){
+        //     $q->where('name', 'Manager');
+        // })->get();
+        $managers = User::getManagers(Auth::user()->department->id);
         return view('purchase-order-requests.create', compact('managers'));
     }
 
@@ -58,6 +76,7 @@ class PurchaseOrderRequestController extends Controller
          $purchase_order_request = PurchaseOrderRequest::create($data);
          $purchase_order_request->user_id = Auth::user()->id;
          $purchase_order_request->save();
+         $managers = '';
          return redirect(route('home'))->with('status', 'Purchase order request submitted');
     }
 

@@ -17,13 +17,13 @@ class CreatePurchaseOrderRequestsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('user_id')->nullable();
             $table->unsignedInteger('manager_id')->nullable();
-            $table->string('approved_by_manager')->default('pending');
+            $table->string('approved_by_manager')->default('Pending');
             $table->date('approved_by_manager_on')->nullable();
             $table->unsignedInteger('senior_manager_id')->nullable();
-            $table->string('approved_by_senior_manager')->default('pending');
+            $table->string('approved_by_senior_manager')->default('Pending');
             $table->date('approved_by_senior_manager_on')->nullable();
             $table->unsignedInteger('admin_id')->nullable();
-            $table->string('approved_by_admin')->default('pending');
+            $table->string('approved_by_admin')->default('Pending');
             $table->date('approved_by_admin_on')->nullable();
             $table->string('category')->nullable();
             $table->string('subcategory')->nullable();

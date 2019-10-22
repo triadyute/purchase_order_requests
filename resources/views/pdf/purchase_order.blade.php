@@ -54,6 +54,30 @@
             <strong>Expected by</strong><br>
             {{\Carbon\Carbon::parse($data->expected_on)->toFormattedDateString()}}
         </p>
+        <p style="font-family:sans-serif;">
+            <strong>Approved by manager:</strong><br>
+            @if ($data->user->hasManagerRole() || $data->user->hasSeniorManagerRole()|| $data->user->hasAdminRole())
+            {{'N/A'}}
+            @else
+            {{$data->approved_by_manager}}
+            @endif
+        </p>
+        <p style="font-family:sans-serif;">
+            <strong>Approved by Senior manager:</strong><br>
+            @if ($data->user->hasSeniorManagerRole()|| $data->user->hasAdminRole())
+            {{'N/A'}}
+            @else
+            {{$data->approved_by_senior_manager}}
+            @endif
+        </p>
+        <p style="font-family:sans-serif;">
+            <strong>Approved by Admin:</strong><br>
+            @if ($data->user->hasAdminRole())
+            {{'N/A'}}
+            @else
+            {{$data->approved_by_admin}}
+            @endif
+        </p>
     </div>
 </div>
 @endsection

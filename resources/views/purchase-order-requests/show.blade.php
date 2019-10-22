@@ -14,7 +14,15 @@
         <p><strong>Subcategory:</strong> {{$purchaseOrderRequest->subcategory}}</p>
     </div>
     <div class="col-md-4">
-        <p><strong>Amount requested:</strong> {{$purchaseOrderRequest->amount}}</p>
+        <p><strong>Amount requested:</strong>                                    
+            @if($purchaseOrderRequest->currency == 'usd')
+            &#36;
+            @elseif($purchaseOrderRequest->currency == 'gbp')
+            &#163;
+            @elseif($purchaseOrderRequest->currency == 'eur')
+            &#128;
+            @endif{{$purchaseOrderRequest->amount}}
+        </p>
         <p><strong>Funds expected by:</strong> {{\Carbon\Carbon::parse($purchaseOrderRequest->expected_on)->toFormattedDateString()}}</p>
         <p><strong>Admin approval:</strong> {{$purchaseOrderRequest->approved_by_admin}}</p>
     </div>
@@ -25,6 +33,7 @@
         <p>{{$purchaseOrderRequest->request_details}}</p>
     </div>
 </div>
+<hr>
 <div class="row">
     <div class="col-md-12">
         <a href="{{route('download.pdf', $purchaseOrderRequest)}}"><button class="btn btn-primary">Download PDF copy</button></a>

@@ -42,11 +42,8 @@
                 <td>{{ucfirst($po_request->approved_by_admin)}}</td>
                 <td>{{\Carbon\Carbon::parse($po_request->created_at)->toFormattedDateString()}}</td>
                 <!--<td><button class="btn btn-success btn-sm" id="viewButton">View PO Request</button></td>-->
-                <td>                        
-                    <form method="GET" action="{{ route('download.pdf', $po_request)}}">
-                    @csrf
-                    <button class="btn btn-sm" type="submit">Download pdf</button>
-                    </form>
+                <td>
+                    <a href="{{route('purchase-order-request.show', $po_request)}}"><button class="btn btn-success btn-sm">View request</button></a>
                 </td>
             </tr>
         @endforeach

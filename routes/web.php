@@ -15,9 +15,10 @@ Route::get('/', function () {
 })->middleware('guest');
 
 Auth::routes(['verify' => true]);
-Route::resource('purchase-order-request', 'PurchaseOrderRequestController');
+Route::resource('purchase-order-request', 'PurchaseOrderRequestController')->middleware('verified','auth');
+Route::resource('user', 'UserController')->middleware('verified','auth');
 Route::get('/download-pdf/{purchase_order_request}', 'PurchaseOrderRequestController@download_pdf')->name('download.pdf');
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
-Route::get('/create-user', 'UserController@create')->name('create.user')->middleware('auth');
-Route::post('/save-user', 'UserController@store')->name('store.user')->middleware('auth');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('verified','auth');
+Route::get('/create-user', 'UserController@create')->name('create.user')->middleware('verified', 'auth');
+Route::post('/save-user', 'UserController@store')->name('store.user')->middleware('verified', 'auth');

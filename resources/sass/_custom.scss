@@ -83,3 +83,35 @@ footer{
     background-color: #ccc !important;
     color: #000 !important;
   }
+
+  table{
+    scroll-margin-bottom: 3em;
+  }
+
+  .btn-sm{
+    font-size: .5em;
+  }
+
+  .bgimage{
+    background-image: url('/img/po_bg.png');
+    background-position: center center;
+    background-size: cover;
+    padding-bottom: 9em;
+  }
+
+  span.count-notification{
+    position: relative;
+    top: -.5em;
+    left: -.5em;
+    background:#ea7308; 
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 10px;
+    text-align: center;
+    padding: 1px;
+    }
+    span.count-notification.green{
+    background:#ea7308;
+    }

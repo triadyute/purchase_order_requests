@@ -18,9 +18,7 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'department_id' => function(){
-        	return factory(\App\Department::class)->create()->id;
-        },
+        'department_id' => 1,
         'name' => $faker->firstName() .' '. $faker->lastName(),
         'job_title' => $faker->randomElement(['Web Developer', 'Network Engineer', 'Cloud Engineer']),
         'email' => $faker->unique()->safeEmail,

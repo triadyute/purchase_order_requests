@@ -108,4 +108,21 @@ class User extends Authenticatable implements MustVerifyEmail
         ->where([['roles.name', 'Manager'], ['users.department_id', $department_id]])->select('users.*')->get();
     }
 
+    public function myPurchaseOrders()
+    {
+        return  \App\PurchaseOrderRequest::where('user_id', $this->id)->orderBy('id', 'DESC')->limit(5)->get();
+    }
+
+    public function allMyPurchaseOrders()
+    {
+        return \App\PurchaseOrderRequest::where('user_id', $this->id)->orderBy('id', 'DESC')->get();
+    }
+
+    public function myApprovedPurchaseOrders()
+    {
+        return  \App\PurchaseOrderRequest::where('user_id', $this->id)
+        ->where('approved_by_admin', 'Approved')
+        ->orderBy('id', 'DESC')->limit(5)->get();
+    }
+
 }
