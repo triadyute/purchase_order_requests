@@ -17,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'job_title', 'email', 'password', 'department_id'
+        'name', 'job_title', 'email', 'password', 'department_id', 'profile_photo'
     ];
 
     /**
@@ -101,6 +101,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public static function getManagers(int $department_id)
+    {
+        return  DB::table('users')
+        ->join('role_user', 'users.id', '=', 'role_user.user_id')
+        ->join('roles', 'roles.id', '=', 'role_user.role_id')
+        ->where([['roles.name', 'Manager'], ['users.department_id', $department_id]])->select('users.*')->get();
+    }
+
+    public static function getSeniorManagers(int $department_id)
     {
         return  DB::table('users')
         ->join('role_user', 'users.id', '=', 'role_user.user_id')

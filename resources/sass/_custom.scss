@@ -55,6 +55,7 @@ footer{
   h1, h2, h3, h4, h5, h6{
     font-family: 'Work Sans', sans-serif;
     color: #30415d;
+    font-size:.9em;
   }
 
   label{
@@ -101,17 +102,38 @@ footer{
 
   span.count-notification{
     position: relative;
-    top: -.5em;
+    top: -.6em;
     left: -.5em;
     background:#ea7308; 
     width: 20px;
     height: 20px;
     border-radius: 50%;
     color: #ffffff;
-    font-size: 10px;
+    font-size: 9px;
     text-align: center;
-    padding: 1px;
+    padding: 1px 2px;
     }
     span.count-notification.green{
     background:#ea7308;
+    }
+
+    .notifications{
+      background:grey;
+      font-size: 10px;
+      color: #fff;
+      border-radius: 50%;
+      padding:3px;
+    }
+    .round-avatar{
+      position: relative;
+      top: .4em;
+      margin-right: 1em;
+    }
+
+    .file-upload{
+      padding-left: -.5em ;
+    }
+
+    .card{
+      border:0;
     }

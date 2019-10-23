@@ -1,14 +1,12 @@
 @extends('layouts.app')
-
 @section('content')
-<h4>Purchase Order Requests</h4>
+<h4>All purchase order requests for {{$user->name}}</h4>
 @include('inc.messages')
 <span class="small">
 <table class="table table-striped" id="myTable">
     <thead>
         <tr>
             <th>Req#</th>
-            <th>Employee</th>
             <th>Category</th>
             <th>Amount</th>
             <th>Request details</th>
@@ -18,7 +16,7 @@
         </tr>
     </thead>
     <tbody>
-            @foreach ($purchase_order_requests as $po_request)
+            @foreach ($purchaseOrderRequests as $po_request)
             <tr>
                 <td>
                     @if ($po_request->id < 10)
@@ -27,7 +25,6 @@
                     {{$po_request->id}}
                     @endif
                 </td>
-                <td>{{$po_request->user->name}}</td>
                 <td>{{$po_request->category}}</td>
                 <td>
                         @if($po_request->currency == 'usd')
@@ -58,8 +55,8 @@
             buttons: [
                 'copy', 'excel', 'pdf', 'print'
             ],
-            order: [[ 1, "desc" ]]
+            order: [[ 0, "desc" ]]
         } );
     </script>
-@endsection
+@endsection    
 @endsection

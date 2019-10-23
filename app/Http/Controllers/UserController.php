@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use App\User;
 use App\Department;
@@ -14,10 +15,10 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function index(){
-        $this->authorize('manage-all-users');
-        $users = User::all();
-        //return $users;
-        return view('users.index', compact('users'));
+        if(Gate::allows('manage-all-users')){
+            $users = User::all();
+            return view('users.index', compact('users'));
+        }
     }
     
     public function create(){

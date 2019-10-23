@@ -35,28 +35,28 @@
             <label for="category">Category</label>
             <select id="groups" name="category" class="form-control" required>
                 <option selected disabled>Select category</option>
-                <option value='training'>Training and exams</option>
-                <option value='telephone expenses'>Telephone Expenses</option>
-                <option value='travel'>Travel</option>
-                <option value='insurance'>Insurance</option>
-                <option value='office'>Office Expenses</option>
-                <option value='entertainment'>Entertainment</option>
+                <option value='Training'>Training and exams</option>
+                <option value='Telephone expenses'>Telephone Expenses</option>
+                <option value='Travel'>Travel</option>
+                <option value='Insurance'>Insurance</option>
+                <option value='Office'>Office Expenses</option>
+                <option value='Entertainment'>Entertainment</option>
             <select>
         </div>
         <div class="form-group col-md-6 service-small">
             <label for="subcategory">Subcategory</label>
             <select id="sub_groups" name="subcategory" class="form-control">
                 <option data-group='SHOW' value='0'>Select subcategory</option>
-                <option data-group='training' value='Training'>Training</option>
-                <option data-group='training' value='Exams'>Exams</option>
-                <option data-group='telephone expenses' value='Mobile'>Mobile</option>
-                <option data-group='travel' value='Hotel Accomodations'>Hotel Accomodations</option>
-                <option data-group='travel' value='Cars'>Cars</option>
-                <option data-group='travel' value='Fuel'>Fuel</option>
-                <option data-group='travel' value='Flight'>Flight/Travel</option>
-                <option data-group='insurance' value='Medical Insurance'>Medical Insurance</option>
-                <option data-group='insurance' value='Business Insurance'>Business Insurance</option>
-                <option data-group='entertainment' value='Entertainment'>Customer entertainment</option>
+                <option data-group='Training' value='Training'>Training</option>
+                <option data-group='Training' value='Exams'>Exams</option>
+                <option data-group='Telephone expenses' value='Mobile'>Mobile</option>
+                <option data-group='Travel' value='Hotel Accomodations'>Hotel Accomodations</option>
+                <option data-group='Travel' value='Cars'>Cars</option>
+                <option data-group='Travel' value='Fuel'>Fuel</option>
+                <option data-group='Travel' value='Flight'>Flight/Travel</option>
+                <option data-group='Insurance' value='Medical Insurance'>Medical Insurance</option>
+                <option data-group='Insurance' value='Business Insurance'>Business Insurance</option>
+                <option data-group='Entertainment' value='Entertainment'>Customer entertainment</option>
             </select>
         </div>
     </div>

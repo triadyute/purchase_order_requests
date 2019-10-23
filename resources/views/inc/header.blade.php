@@ -27,9 +27,6 @@
                 </div>
               </li>
               @endcan
-              <li class="nav-item">
-                <a class="nav-link" href="#">Notifications <span class="count-notification">22</span></a>
-              </li>
             </ul>
           @endauth
 
@@ -44,7 +41,15 @@
                     </li>
                 @endif
             @else
-            <img src="{{asset('/img/avatar.png')}}" alt="" class="rounded-circle float-left" height="35" width="35">
+            <li class="nav-item">
+                <img src="{{asset('/img/avatar.png')}}" alt="" class="rounded-circle float-left round-avatar" height="27" width="27">
+            </li>
+            <li class="nav-item dropdown float-right">
+                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre> <i class="fa fa-bell fa-lg"></i> <span class="count-notification">22</span></a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#"><span class="notifications">22</span> Unread requests</a>
+                </div>  
+            </li>
             <li class="nav-item dropdown float-right">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->name }} <span class="caret"></span>

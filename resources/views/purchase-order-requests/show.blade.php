@@ -2,6 +2,7 @@
 @section('content')
 <h4>Purchase order#: PO{{$purchaseOrderRequest->id}}</h4>
 <hr>
+@include('inc.messages')
 <div class="row request-details">
     <div class="col-md-4">
         <p><strong>Name:</strong> {{$purchaseOrderRequest->user->name}}</p>
@@ -34,9 +35,52 @@
     </div>
 </div>
 <hr>
-<div class="row">
-    <div class="col-md-12">
-        <a href="{{route('download.pdf', $purchaseOrderRequest)}}"><button class="btn btn-primary">Download PDF copy</button></a>
+@if ((Auth::user()->hasAdminRole() || Auth::user()->hasSuperuserRole()) && $purchaseOrderRequest->approved_by_admin == 'Approved')
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{{route('download.pdf', $purchaseOrderRequest)}}"><button class="btn btn-primary">Download PDF copy</button></a>
+        </div>
     </div>
-</div>
+@endif
+@if (Auth::user()->hasManagerRole())
+<h4>Manager Approval</h4>
+<form method="POST" action="{{route('manager.approve', $purchaseOrderRequest)}}">
+    @csrf
+    @method('PUT')
+    <div class="row">
+       <div class="col-md-3">
+          <select name="approved_by_manager" class="form-control" id="approved_by_manager" @if($purchaseOrderRequest->approved_by_manager != "Pending") disabled @endif>>
+              <option value="Pending" @if($purchaseOrderRequest->approved_by_manager == "Pending") selected @endif>Pending</option>
+              <option value="Approved" @if($purchaseOrderRequest->approved_by_manager == "Approved") selected @endif>Approved</option>
+              <option value="Declined" @if($purchaseOrderRequest->approved_by_manager == "Declined") selected @endif>Declined</option>
+          </select>
+        </div>
+        @if ($purchaseOrderRequest->approved_by_manager == 'Pending')
+            <div class="col-md-3">
+                <button class="btn btn-success">Submit</button>
+            </div>
+        @endif  
+    </div>
+</form>
+@elseif(Auth::user()->hasSeniorManagerRole())
+<h4>Senior Manager Approval</h4>
+<form method="POST" action="#">
+    @csrf
+    @method('PUT')
+    <div class="row">
+       <div class="col-md-3">
+          <select name="approved_by_senior_manager" class="form-control" id="approved_by_senior_manager" @if($purchaseOrderRequest->approved_by_senior_manager != "Pending") disabled @endif>>
+              <option value="Pending" @if($purchaseOrderRequest->approved_by_senior_manager == "Pending") selected @endif>Pending</option>
+              <option value="Approved" @if($purchaseOrderRequest->approved_by_senior_manager == "Approved") selected @endif>Approved</option>
+              <option value="Declined" @if($purchaseOrderRequest->approved_by_senior_manager == "Declined") selected @endif>Declined</option>
+          </select>
+        </div>
+        @if ($purchaseOrderRequest->approved_by_senior_manager == 'Pending')
+            <div class="col-md-3">
+                <button class="btn btn-success">Submit</button>
+            </div>
+        @endif  
+    </div>
+</form>
+@endif
 @endsection

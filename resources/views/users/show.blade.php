@@ -31,9 +31,12 @@
             @endforeach  
         @endif
         </p>
-        @if(Auth::user()->id == $user->id || Auth::user()->hasSuperuserRole())
-        <a href="{{route('user.edit', $user)}}"><button class="btn btn-primary btn-sm">Edit profile</button></a>
-        @endif
+        <div class="col-md-12"  style="margin-left:-1em;">
+                @if(Auth::user()->id == $user->id || Auth::user()->hasAdminRole() || Auth::user()->hasSuperuserRole() )
+                <a href="{{route('user.edit', $user)}}"><button class="btn btn-primary btn-sm">Edit profile</button></a>
+                @endif
+                <a href="{{route('user.pos', $user)}}"><button class="btn btn-primary btn-sm" style="display:inline;">View All POs</button></a>
+        </div>
     </div>
 </div>
     <h4>

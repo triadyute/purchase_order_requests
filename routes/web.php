@@ -10,15 +10,20 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use App\Http\Controllers\PurchaseOrderRequestController;
+
 Route::get('/', function () {
     return view('welcome');
 })->middleware('guest');
 
 Auth::routes(['verify' => true]);
-Route::resource('purchase-order-request', 'PurchaseOrderRequestController')->middleware('verified','auth');
-Route::resource('user', 'UserController')->middleware('verified','auth');
-Route::get('/download-pdf/{purchase_order_request}', 'PurchaseOrderRequestController@download_pdf')->name('download.pdf');
+Route::resource('/purchase-order-request', 'PurchaseOrderRequestController')->middleware('verified','auth');
+Route::resource('/user', 'UserController')->middleware('verified','auth');
+Route::get('/download-pdf/{purchase_order_request}', 'PurchaseOrderRequestController@download_pdf')->name('download.pdf')->middleware('auth');
+Route::put('/manager-approve/{purchaseOrderRequest}', 'PurchaseOrderRequestController@manager_approval')->name('manager.approve')->middleware('auth');
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified','auth');
 Route::get('/create-user', 'UserController@create')->name('create.user')->middleware('verified', 'auth');
 Route::post('/save-user', 'UserController@store')->name('store.user')->middleware('verified', 'auth');
+Route::get('user-pos/{user}', 'PurchaseOrderRequestController@user_pos')->name('user.pos')->middleware('verified', 'auth');

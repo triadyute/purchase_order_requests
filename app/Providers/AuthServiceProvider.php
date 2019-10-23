@@ -29,6 +29,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasAdminRole() || $user->hasSuperUserRole();
         });
 
+        Gate::define('add-departments', function($user){
+            $user->hasSuperUserRole();
+        });
+
         Gate::define('view-all-pos', function ($user) {
             return $user->hasRole('Admin') || $user->hasSuperUserRole();
         });
