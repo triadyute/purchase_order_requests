@@ -34,18 +34,18 @@
         <p>{{$purchaseOrderRequest->request_details}}</p>
     </div>
 </div>
+<hr>
 <div class="row">
     <div class="col-md-4">
-        <p><strong>Manager Approval:</strong><br>{{$purchaseOrderRequest->approved_by_manager}}</p>
+        <p><strong>Manager Approval:</strong><br>{{$purchaseOrderRequest->approved_by_manager}} @if($manager){{" - " . $manager->name}}@endif</p>
     </div>
     <div class="col-md-4">
-        <p><strong>Senior Manager Approval:</strong><br>{{$purchaseOrderRequest->approved_by_senior_manager}}</p>
+        <p><strong>Senior Manager Approval:</strong><br>{{$purchaseOrderRequest->approved_by_senior_manager}}  @if($seniorManager){{" - " . $seniorManager->name}}@endif</p>
     </div>
     <div class="col-md-4">
-        <p><strong>Admin Approval</strong><br>{{$purchaseOrderRequest->approved_by_admin}}</p>
+        <p><strong>Admin Approval</strong><br>{{$purchaseOrderRequest->approved_by_admin}}  @if($admin){{" - " . $admin->name}}@endif</p>
     </div>
 </div>
-<hr>
 @if (Auth::user()->hasManagerRole())
 <h4>Manager Approval</h4>
 <form method="POST" action="{{route('manager.approve', $purchaseOrderRequest)}}">
@@ -114,5 +114,12 @@
             <a href="{{route('download.pdf', $purchaseOrderRequest)}}"><button class="btn btn-primary">Download PDF copy</button></a>
         </div>
     </div>
+@elseif((Auth::user()->hasuserRole() || Auth::user()->hasManagerRole()|| Auth::user()->hasSeniorManagerRole()) && $purchaseOrderRequest->approved_by_admin == 'Approved')
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <a href="{{route('download.pdf', $purchaseOrderRequest)}}"><button class="btn btn-primary">Download PDF copy</button></a>
+    </div>
+</div>
 @endif
 @endsection

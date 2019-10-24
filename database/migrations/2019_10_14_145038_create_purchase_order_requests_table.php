@@ -30,6 +30,7 @@ class CreatePurchaseOrderRequestsTable extends Migration
             $table->text('request_details')->nullable();
             $table->unsignedInteger('amount')->nullable();
             $table->string('currency')->nullable();
+            $table->text('reason_for_decline')->nullable();
             $table->date('expected_on')->nullable();
             $table->timestamps();
         });

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <h4>All purchase order requests for {{$user->name}}</h4>
+<hr>
 @include('inc.messages')
 <span class="small">
 <table class="table table-striped" id="myTable">
@@ -11,7 +12,8 @@
             <th>Amount</th>
             <th>Request details</th>
             <th>Approval</th>
-            <th>Date</th>
+            <th>Req. Date</th>
+            <th>Exp. Date</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -39,6 +41,7 @@
                 <td>{{Str::limit($po_request->request_details, 70)}}</td>
                 <td>{{ucfirst($po_request->approved_by_admin)}}</td>
                 <td>{{\Carbon\Carbon::parse($po_request->created_at)->toFormattedDateString()}}</td>
+                <td>{{\Carbon\Carbon::parse($po_request->expected_on)->toFormattedDateString()}}</td>
                 <!--<td><button class="btn btn-success btn-sm" id="viewButton">View PO Request</button></td>-->
                 <td>
                     <a href="{{route('purchase-order-request.show', $po_request)}}"><button class="btn btn-success btn-sm">View request</button></a>

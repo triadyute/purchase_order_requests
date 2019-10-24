@@ -12,7 +12,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">Dept.</th>
                 <th scope="col">Job Title</th>
-                <th scope="col">Role</th>
+                <th scope="col">Privileges</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>

@@ -14,6 +14,7 @@
                         </div>
                     @endif
 
+                    {{ __('Your Purchase Order Portal account was successfully created.') }}
                     {{ __('Before proceeding, please check your email for a verification link.') }}
                     {{ __('If you did not receive the email') }},
                     <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">

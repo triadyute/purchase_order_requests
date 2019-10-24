@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<h4>Purchase Order Requests</h4>
+@if(Auth::user()->hasAdminRole() || Auth::user()->hasSuperuserRole())
+<h4>All purchase Order Requests</h4>
+@else
+<h4>All purchase order requests for {{Auth::user()->name}}</h4>
+@endif
+<hr>
 @include('inc.messages')
 <span class="small">
 <table class="table table-striped" id="myTable">

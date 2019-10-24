@@ -27,7 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $purchaseOrderRequests = PurchaseOrderRequest::orderBy('id', 'DESC')->get();
+        $purchaseOrderRequests = PurchaseOrderRequest::orderBy('id', 'DESC')->limit(5)->get();
         $approvedPurchaseOrderRequests = PurchaseOrderRequest::where('approved_by_admin', 'Approved')->get();
         $declinedPurchaseOrderRequests = PurchaseOrderRequest::where('approved_by_admin', 'Declined')->get();
         if(Gate::allows('view-all-pos', $purchaseOrderRequests)){

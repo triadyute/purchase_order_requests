@@ -63,7 +63,7 @@ class RegisterController extends Controller
             'department_id' => ['required', 'integer'],
             'job_title' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'profile_photo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg|max:4000']
+            //'profile_photo' => ['image', 'mimes:jpeg,png,jpg,gif,svg|max:4000']
         ]);
     }
 
@@ -81,36 +81,10 @@ class RegisterController extends Controller
             'department_id' => $data['department_id'],
             'job_title' => $data['job_title'],
             'password' => Hash::make($data['password']),
-            'profile_photo' => $data['profile_photo']
+            //'profile_photo' => $data['profile_photo']
         ]);
         $role = 1;
         $user->roles()->attach($role);
-        $imageName = request()->file('profile_photo');
-        if($imageName!==null)
-         {
-        //     // get the extension
-        //     $extension = $imageName->getClientOriginalExtension();
-        //     // create a new file name
-        //     $new_name = date( 'Y-m-d' ) . '-' . Str::random( 10 ) . '.' . $extension;
-        //     // move file to public/images/new and use $new_name
-        //     $imageName->move( public_path('/public/profile_photos'), $new_name);
-        //     $user->profile_photo = $new_name;
-        // }
-        // if (!empty(request()->profile_photo))
-        // {
-        //     // $fileNameWithExt = request()->file('profile_photo')->getClientOriginalName();
-        //     // $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-        //     // $extension = request()->file('profile_photo')->getClientOriginalExtension();
-        //     // $fileNameToStore = $filename.'_'.time().'.'.$extension;
-        //     // $path = request()->file('profile_photo')->storeAs('public/profile_photos', $fileNameToStore);
-        //     // $final_name = $fileNameToStore;
-        //     // //dd($final_name);
-        //     // $user->profile_photo = $final_name;     
-             $file = request()->input('profile_photo');
-             $destinationPath = public_path(). '/public/profile_photos';
-             $filename = $file->getClientOriginalName();
-             request()->input('profile_photo')->move($destinationPath, $filename);       
-        }
         return $user;
     }
 

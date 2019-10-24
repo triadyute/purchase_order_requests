@@ -24,6 +24,8 @@
                   <a class="dropdown-item" href="{{route('create.user')}}"> <i class="fa fa-user-plus"></i> Add User</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="{{route('user.index')}}"> <i class="fa fa-users"></i> Manage Users</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{{route('department.index')}}"> <i class="fa fa-users"></i> Departments</a>
                 </div>
               </li>
               @endcan
@@ -52,10 +54,19 @@
               @endif
             </li>
             <li class="nav-item dropdown float-right">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre> <i class="fa fa-bell fa-lg"></i> <span class="count-notification">22</span></a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#"><span class="notifications">22</span> Unread requests</a>
-                </div>  
+                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre> <i class="fa fa-bell fa-lg"></i> @if(count(Auth::user()->unreadNotifications) != 0 )<span class="count-notification">{{count(Auth::user()->unreadNotifications)}} @endif</span></a>
+                  @if (AUth::user()->unreadNotifications)
+                    @foreach (Auth::user()->unreadNotifications as $notification)
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                      <a href="#" class="dropdown-item" id="navbarDropdown">{{$notification->data['message']}}</a>           
+                    </div>  
+                    @endforeach
+                  @endif
+                @if(count(Auth::user()->unreadNotifications) == 0 )
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" id="navbarDropdown" disabled="">No notifications</a>        
+                  </div>  
+                @endif
             </li>
             <li class="nav-item dropdown float-right">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

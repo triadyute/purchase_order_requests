@@ -6,12 +6,14 @@ use App\PurchaseOrderRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\RequestReceived;
 use App\Mail\ManagerApproval;
 use App\Mail\SeniorManagerApproval;
 use App\Mail\AdminApproval;
 use App\Mail\AdminResponse;
 use App\User;
 use Illuminate\Http\Request;
+use Notification;
 use PDF;
 
 class PurchaseOrderRequestController extends Controller
@@ -77,14 +79,48 @@ class PurchaseOrderRequestController extends Controller
          ]);
          //return $data;
 
-         $purchase_order_request = PurchaseOrderRequest::create($data);
-         $purchase_order_request->user_id = Auth::user()->id;
-         $purchase_order_request->save();
          if(Auth::user()->hasUserRole())
          {
+            $purchaseOrderRequest = PurchaseOrderRequest::create($data);
+            $purchaseOrderRequest->user_id = Auth::user()->id;
+            $purchaseOrderRequest->save();
             $user = Auth::user();
             $managers = User::getManagers(Auth::user()->department->id);
-            Mail::to($managers)->queue(new ManagerApproval($user, $purchase_order_request, ));
+            
+            //Send notifications to managers
+            $manager_notifications = User::whereHas(
+                'roles', function($q){
+                    $q->where('name', 'Manager');
+            })->where('department_id', Auth::user()->department_id)->get();
+            foreach($manager_notifications as $manager){
+                $manager->notify(new RequestReceived($user, $purchaseOrderRequest));
+            }
+            //Send email to managers
+            Mail::to($managers)->queue(new ManagerApproval($user, $purchaseOrderRequest));
+         }
+         elseif(Auth::user()->hasManagerRole())
+         {
+            $purchaseOrderRequest = PurchaseOrderRequest::create($data);
+            $purchaseOrderRequest->user_id = Auth::user()->id;
+            $purchaseOrderRequest->manager_id = Auth::user()->id;
+            $purchaseOrderRequest->approved_by_manager = 'Approved';
+            $purchaseOrderRequest->save();
+            $user = Auth::user();
+            $senior_managers = User::getSeniorManagers(Auth::user()->department->id);
+            Mail::to($senior_managers)->queue(new SeniorManagerApproval($user, $purchaseOrderRequest, ));
+         }
+         elseif(Auth::user()->hasSeniorManagerRole())
+         {
+            $purchaseOrderRequest = PurchaseOrderRequest::create($data);
+            $purchaseOrderRequest->user_id = Auth::user()->id;
+            $purchaseOrderRequest->manager_id = Auth::user()->id;
+            $purchaseOrderRequest->approved_by_manager = 'N/A';
+            $purchaseOrderRequest->senior_manager_id = Auth::user()->id;
+            $purchaseOrderRequest->approved_by_senior_manager = 'Approved';
+            $purchaseOrderRequest->save();
+            $user = Auth::user();
+            $admin = User::getAdmin();
+            Mail::to($admin)->queue(new SeniorManagerApproval($user, $purchaseOrderRequest));
          }
          return redirect(route('purchase-order-request.index'))->with('status', 'Purchase order request submitted');
     }
@@ -96,8 +132,11 @@ class PurchaseOrderRequestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(PurchaseOrderRequest $purchaseOrderRequest)
-    {
-        return view('purchase-order-requests.show', compact('purchaseOrderRequest'));
+    {   
+        $manager = User::find($purchaseOrderRequest->manager_id);
+        $seniorManager = User::find($purchaseOrderRequest->senior_manager_id);
+        $admin = User::find($purchaseOrderRequest->admin_id);
+        return view('purchase-order-requests.show', compact('purchaseOrderRequest', 'manager', 'seniorManager', 'admin'));
     }
 
     /**
@@ -115,8 +154,9 @@ class PurchaseOrderRequestController extends Controller
     public function manager_approval(PurchaseOrderRequest $purchaseOrderRequest, Request $request) 
     {
         $user = $purchaseOrderRequest->user;
-        $purchaseOrderRequest->approved_by_manager = $request->approved_by_manager;
         $purchaseOrderRequest->manager_id = Auth::user()->id;
+        $purchaseOrderRequest->approved_by_manager = $request->approved_by_manager;
+        $purchaseOrderRequest->approved_by_manager_on = now()->format('Y-m-d H:i:s');
         $purchaseOrderRequest->update();
         $senior_managers = User::getSeniorManagers(Auth::user()->department->id);
         Mail::to($senior_managers)->queue(new SeniorManagerApproval($user, $purchaseOrderRequest, ));
@@ -126,8 +166,9 @@ class PurchaseOrderRequestController extends Controller
     public function senior_manager_approval(PurchaseOrderRequest $purchaseOrderRequest, Request $request) 
     {
         $user = $purchaseOrderRequest->user;
-        $purchaseOrderRequest->approved_by_senior_manager = $request->approved_by_senior_manager;
         $purchaseOrderRequest->senior_manager_id = Auth::user()->id;
+        $purchaseOrderRequest->approved_by_senior_manager = $request->approved_by_senior_manager;
+        $purchaseOrderRequest->approved_by_senior_manager_on = now()->format('Y-m-d H:i:s');
         $purchaseOrderRequest->update();
         $admin = User::getAdmin();
         Mail::to($admin)->queue(new AdminApproval($user, $purchaseOrderRequest, ));
@@ -137,8 +178,9 @@ class PurchaseOrderRequestController extends Controller
     public function admin_approval(PurchaseOrderRequest $purchaseOrderRequest, Request $request) 
     {
         $user = $purchaseOrderRequest->user;
-        $purchaseOrderRequest->approved_by_admin = $request->approved_by_admin;
         $purchaseOrderRequest->admin_id = Auth::user()->id;
+        $purchaseOrderRequest->approved_by_admin = $request->approved_by_admin;
+        $purchaseOrderRequest->approved_by_admin_on = now()->format('Y-m-d H:i:s');
         $purchaseOrderRequest->update();
         Mail::to($user)->queue(new AdminResponse($user, $purchaseOrderRequest));
         return redirect()->back()->with('status', 'Purchase order request updated');
@@ -149,6 +191,6 @@ class PurchaseOrderRequestController extends Controller
         $data = $purchaseOrderRequest;
         //return $data;
         $pdf = PDF::loadView('pdf.purchase_order' , compact('data'));
-        return $pdf->download('purchase_order.pdf');
+        return $pdf->download('Purchase_order_'. $purchaseOrderRequest->created_at . '.pdf');
     }
 }

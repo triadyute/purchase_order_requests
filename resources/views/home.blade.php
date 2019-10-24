@@ -39,7 +39,11 @@
         </h4>
     </div>
     <div class="col-md-6">
+        @can('view-all-pos', $purchaseOrderRequests)
         <a href="{{route('purchase-order-request.index')}}"><span class="float-right"><button class="btn btn-primary btn-sm" id="viewButton"><i class="fa fa-eye"></i> See all requests</button></span></a>
+        @else
+        <a href="{{route('user.pos', Auth::user())}}"><span class="float-right"><button class="btn btn-primary btn-sm" id="viewButton"><i class="fa fa-eye"></i> All my requests</button></span></a>
+        @endcan
     </div>
 </div>
 <div class="row">

@@ -25,6 +25,7 @@ Route::resource('/purchase-order-request', 'PurchaseOrderRequestController')->mi
 
 //User Routes
 Route::resource('/user', 'UserController')->middleware('verified','auth');
+Route::resource('/department', 'DepartmentController')->middleware('verified','auth');
 
 //Download PDF
 Route::get('/download-pdf/{purchase_order_request}', 'PurchaseOrderRequestController@download_pdf')->name('download.pdf')->middleware('auth');

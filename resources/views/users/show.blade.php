@@ -19,16 +19,14 @@
         <p><strong>Job Title:</strong> {{$user->job_title}}</p>
         <p><strong>Account created:</strong> {{\Carbon\Carbon::parse($user->created_at)->toFormattedDateString()}}</p>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <p><strong>Email:</strong> {{$user->email}}</p>
         <p><strong>Role:</strong> {{$user->roles->first()->name}}</p>
         <p><strong>Reports to: </strong>
         @if ($user->hasAdminRole() || $user->hasSuperuserRole())
             N/A
         @else
-            @foreach ($managers as $manager)
-                {{$manager->name}}
-            @endforeach  
+            {{$managers->pluck('name')->implode(' and ')}}
         @endif
         </p>
         <div class="col-md-12"  style="margin-left:-1em;">
