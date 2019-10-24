@@ -113,7 +113,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return  DB::table('users')
         ->join('role_user', 'users.id', '=', 'role_user.user_id')
         ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->where([['roles.name', 'Manager'], ['users.department_id', $department_id]])->select('users.*')->get();
+        ->where([['roles.name', 'Senior Manager'], ['users.department_id', $department_id]])->select('users.*')->get();
+    }
+
+    public static function getAdmin()
+    {
+        return  DB::table('users')
+        ->join('role_user', 'users.id', '=', 'role_user.user_id')
+        ->join('roles', 'roles.id', '=', 'role_user.role_id')
+        ->where('roles.name', 'Admin')->select('users.*')->get();
     }
 
     public function myPurchaseOrders()
@@ -130,7 +138,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return  \App\PurchaseOrderRequest::where('user_id', $this->id)
         ->where('approved_by_admin', 'Approved')
-        ->orderBy('id', 'DESC')->limit(5)->get();
+        ->orderBy('id', 'DESC')->get();
+    }
+
+    public function myDeclinedPurchaseOrders()
+    {
+        return  \App\PurchaseOrderRequest::where('user_id', $this->id)
+        ->where('approved_by_admin', 'Declined')
+        ->orderBy('id', 'DESC')->get();
     }
 
 }

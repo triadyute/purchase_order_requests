@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\User;
 
-class ManagerApproval extends Mailable
+class AdminResponse extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -23,7 +23,7 @@ class ManagerApproval extends Mailable
      */
     public function __construct(User $user, $purchaseOrderRequest)
     {
-        $this->user =$user;
+        $this->user = $user;
         $this->purchaseOrderRequest = $purchaseOrderRequest;
     }
 
@@ -34,7 +34,7 @@ class ManagerApproval extends Mailable
      */
     public function build()
     {
-        return $this->subject( 'Purchase order request from '. $this->user->name )
-        ->view('emails.approval-requests.manager');
+        return $this->subject( 'Purchase order request ' . $this->purchaseOrderRequest->approved_by_admin)
+        ->view('emails.approvals.admin');
     }
 }

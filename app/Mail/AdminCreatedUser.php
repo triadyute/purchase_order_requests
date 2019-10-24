@@ -34,7 +34,7 @@ class AdminCreatedUser extends Mailable
     public function build()
     {
         return 
-        $this->subject('Account created for ' . $this->user-> name)
+        $this->subject('Account created for ' . $this->user->name)
         ->view('emails.users.create');
     }
 }

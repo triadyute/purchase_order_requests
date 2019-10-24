@@ -41,8 +41,15 @@
                     </li>
                 @endif
             @else
+            
             <li class="nav-item">
-                <img src="{{asset('/img/avatar.png')}}" alt="" class="rounded-circle float-left round-avatar" height="27" width="27">
+              @if (isset(Auth::user()->profile_photo))
+              @if( Auth::user()->profile_photo == 'avatar.png')
+                <img src="{{asset('/img/avatar.png')}}" class="rounded-circle float-left round-avatar" height="27" width="27" alt="profile photo">
+              @else
+                <img src="{{asset('/storage/profile_photos/'.Auth::user()->profile_photo)}}" class="rounded-circle float-left round-avatar" height="27" width="27" alt="profile photo">
+              @endif
+              @endif
             </li>
             <li class="nav-item dropdown float-right">
                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre> <i class="fa fa-bell fa-lg"></i> <span class="count-notification">22</span></a>

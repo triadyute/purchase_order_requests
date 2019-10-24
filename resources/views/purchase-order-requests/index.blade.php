@@ -18,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-            @foreach ($purchase_order_requests as $po_request)
+            @foreach ($purchaseOrderRequests as $po_request)
             <tr>
                 <td>
                     @if ($po_request->id < 10)

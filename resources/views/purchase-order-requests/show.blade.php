@@ -34,14 +34,18 @@
         <p>{{$purchaseOrderRequest->request_details}}</p>
     </div>
 </div>
-<hr>
-@if ((Auth::user()->hasAdminRole() || Auth::user()->hasSuperuserRole()) && $purchaseOrderRequest->approved_by_admin == 'Approved')
-    <div class="row">
-        <div class="col-md-12">
-            <a href="{{route('download.pdf', $purchaseOrderRequest)}}"><button class="btn btn-primary">Download PDF copy</button></a>
-        </div>
+<div class="row">
+    <div class="col-md-4">
+        <p><strong>Manager Approval:</strong><br>{{$purchaseOrderRequest->approved_by_manager}}</p>
     </div>
-@endif
+    <div class="col-md-4">
+        <p><strong>Senior Manager Approval:</strong><br>{{$purchaseOrderRequest->approved_by_senior_manager}}</p>
+    </div>
+    <div class="col-md-4">
+        <p><strong>Admin Approval</strong><br>{{$purchaseOrderRequest->approved_by_admin}}</p>
+    </div>
+</div>
+<hr>
 @if (Auth::user()->hasManagerRole())
 <h4>Manager Approval</h4>
 <form method="POST" action="{{route('manager.approve', $purchaseOrderRequest)}}">
@@ -50,7 +54,7 @@
     <div class="row">
        <div class="col-md-3">
           <select name="approved_by_manager" class="form-control" id="approved_by_manager" @if($purchaseOrderRequest->approved_by_manager != "Pending") disabled @endif>>
-              <option value="Pending" @if($purchaseOrderRequest->approved_by_manager == "Pending") selected @endif>Pending</option>
+              <option value="Pending" @if($purchaseOrderRequest->approved_by_manager == "Pending") selected disabled @endif>Pending</option>
               <option value="Approved" @if($purchaseOrderRequest->approved_by_manager == "Approved") selected @endif>Approved</option>
               <option value="Declined" @if($purchaseOrderRequest->approved_by_manager == "Declined") selected @endif>Declined</option>
           </select>
@@ -64,13 +68,13 @@
 </form>
 @elseif(Auth::user()->hasSeniorManagerRole())
 <h4>Senior Manager Approval</h4>
-<form method="POST" action="#">
+<form method="POST" action="{{route('senior-manager.approve', $purchaseOrderRequest)}}">
     @csrf
     @method('PUT')
     <div class="row">
        <div class="col-md-3">
           <select name="approved_by_senior_manager" class="form-control" id="approved_by_senior_manager" @if($purchaseOrderRequest->approved_by_senior_manager != "Pending") disabled @endif>>
-              <option value="Pending" @if($purchaseOrderRequest->approved_by_senior_manager == "Pending") selected @endif>Pending</option>
+              <option value="Pending" @if($purchaseOrderRequest->approved_by_senior_manager == "Pending") selected disabled @endif>Pending</option>
               <option value="Approved" @if($purchaseOrderRequest->approved_by_senior_manager == "Approved") selected @endif>Approved</option>
               <option value="Declined" @if($purchaseOrderRequest->approved_by_senior_manager == "Declined") selected @endif>Declined</option>
           </select>
@@ -82,5 +86,33 @@
         @endif  
     </div>
 </form>
+@elseif(Auth::user()->hasAdminRole())
+<h4>Admin Approval</h4>
+<form method="POST" action="{{route('admin.approve', $purchaseOrderRequest)}}">
+    @csrf
+    @method('PUT')
+    <div class="row">
+       <div class="col-md-3">
+          <select name="approved_by_admin" class="form-control" id="approved_by_admin" @if($purchaseOrderRequest->approved_by_admin != "Pending") disabled @endif>>
+              <option value="Pending" @if($purchaseOrderRequest->approved_by_admin == "Pending") selected disabled @endif>Pending</option>
+              <option value="Approved" @if($purchaseOrderRequest->approved_by_admin == "Approved") selected @endif>Approved</option>
+              <option value="Declined" @if($purchaseOrderRequest->approved_by_admin == "Declined") selected @endif>Declined</option>
+          </select>
+        </div>
+        @if ($purchaseOrderRequest->approved_by_admin == 'Pending')
+            <div class="col-md-3">
+                <button class="btn btn-success">Submit</button>
+            </div>
+        @endif  
+    </div>
+</form>
+@endif
+@if ((Auth::user()->hasAdminRole() || Auth::user()->hasSuperuserRole()) && $purchaseOrderRequest->approved_by_admin == 'Approved')
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{{route('download.pdf', $purchaseOrderRequest)}}"><button class="btn btn-primary">Download PDF copy</button></a>
+        </div>
+    </div>
 @endif
 @endsection

@@ -16,9 +16,15 @@
         <p><strong>Account created:</strong> <span class="req_date">{{\Carbon\Carbon::parse(Auth::user()->created_at)->toFormattedDateString()}}</span></p>
     </div>
     <div class="col-md-4">
-        <p><strong>Total requests: </strong></p>
-        <p><strong>Approved requests: </strong></p>
-        <p><strong>Declined requests: </strong></p>
+        @can('view-all-pos', $purchaseOrderRequests)
+            <p><strong>Total requests: </strong>{{count($purchaseOrderRequests)}}</p>
+            <p><strong>Approved requests: </strong>{{count($approvedPurchaseOrderRequests)}}</p>
+            <p><strong>Declined requests: </strong>{{count($declinedPurchaseOrderRequests)}}</p>
+        @else
+            <p><strong>Total requests: </strong>{{count($allMyPurchaseOrderRequests)}}</p>
+            <p><strong>Approved requests: </strong>{{count($myApprovedPurchaseOrderRequests)}}</p>
+            <p><strong>Declined requests: </strong>{{count($myDeclinedPurchaseOrderRequests)}}</p>
+        @endcan
     </div>
 </div>
 
@@ -53,7 +59,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($purchase_order_requests as $po_request)
+                @forelse ($purchaseOrderRequests as $po_request)
                     <tr>
                         <th scope="row">
                             @if ($po_request->id < 10)

@@ -11,6 +11,6 @@ class PurchaseOrderRequestsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\PurchaseOrderRequest::class, 1)->create();
+        factory(App\PurchaseOrderRequest::class, 25)->create();
     }
 }

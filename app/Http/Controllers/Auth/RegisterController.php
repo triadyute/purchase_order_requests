@@ -8,11 +8,8 @@ use App\Department;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
-
 class RegisterController extends Controller
 {
     /*
@@ -89,8 +86,8 @@ class RegisterController extends Controller
         $role = 1;
         $user->roles()->attach($role);
         $imageName = request()->file('profile_photo');
-        // if($imageName!==null)
-        // {
+        if($imageName!==null)
+         {
         //     // get the extension
         //     $extension = $imageName->getClientOriginalExtension();
         //     // create a new file name
@@ -99,15 +96,20 @@ class RegisterController extends Controller
         //     $imageName->move( public_path('/public/profile_photos'), $new_name);
         //     $user->profile_photo = $new_name;
         // }
-        if (!empty(request()->profile_photo))
-        {
-            $fileNameWithExt = request()->file('profile_photo')->getClientOriginalName();
-            $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $extension = request()->file('profile_photo')->getClientOriginalExtension();
-            $fileNameToStore = $filename.'_'.time().'.'.$extension;
-            $path = request()->file('profile_photo')->storeAs('public/profile_photos', $fileNameToStore);
-            $final_name = $fileNameToStore;
-            $user->profile_photo = $final_name;            
+        // if (!empty(request()->profile_photo))
+        // {
+        //     // $fileNameWithExt = request()->file('profile_photo')->getClientOriginalName();
+        //     // $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+        //     // $extension = request()->file('profile_photo')->getClientOriginalExtension();
+        //     // $fileNameToStore = $filename.'_'.time().'.'.$extension;
+        //     // $path = request()->file('profile_photo')->storeAs('public/profile_photos', $fileNameToStore);
+        //     // $final_name = $fileNameToStore;
+        //     // //dd($final_name);
+        //     // $user->profile_photo = $final_name;     
+             $file = request()->input('profile_photo');
+             $destinationPath = public_path(). '/public/profile_photos';
+             $filename = $file->getClientOriginalName();
+             request()->input('profile_photo')->move($destinationPath, $filename);       
         }
         return $user;
     }

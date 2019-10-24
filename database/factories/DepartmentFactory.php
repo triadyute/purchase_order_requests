@@ -7,6 +7,6 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Department::class, function (Faker $faker) {
     return [
-        'name' => $faker->randomElement(['Cloud Services', 'Software Development', 'Accounts']),
+        'name' => $faker->unique()->randomElement(['Cloud Services', 'Software Development', 'Accounts']),
     ];
 });
