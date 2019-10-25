@@ -43,7 +43,6 @@
                     </li>
                 @endif
             @else
-            
             <li class="nav-item">
               @if (isset(Auth::user()->profile_photo))
               @if( Auth::user()->profile_photo == 'avatar.png')
@@ -55,24 +54,21 @@
             </li>
             <li class="nav-item dropdown float-right">
                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre> <i class="fa fa-bell fa-lg"></i> @if(count(Auth::user()->unreadNotifications) != 0 )<span class="count-notification">{{count(Auth::user()->unreadNotifications)}} @endif</span></a>
-                  @if (AUth::user()->unreadNotifications)
-                    @foreach (Auth::user()->unreadNotifications as $notification)
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                      <a href="#" class="dropdown-item" id="navbarDropdown">{{$notification->data['message']}}</a>           
-                    </div>  
-                    @endforeach
-                  @endif
-                @if(count(Auth::user()->unreadNotifications) == 0 )
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" id="navbarDropdown" disabled="">No notifications</a>        
+                    @foreach (Auth::user()->unreadNotifications as $notification)
+                      <a href="{{$notification->data['url']}}" class="dropdown-item" id="navbarDropdown">{{$notification->data['message']}}</a>           
+                    @endforeach
                   </div>  
-                @endif
+                  @if(count(Auth::user()->unreadNotifications) == 0 )
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" id="navbarDropdown" disabled="">No notifications</a>        
+                    </div>  
+                  @endif
             </li>
             <li class="nav-item dropdown float-right">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->name }} <span class="caret"></span>
                     </a>
-
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('logout') }}"
                           onclick="event.preventDefault();
@@ -83,7 +79,6 @@
                         <a href="{{route('user.show', Auth::user())}}" class="dropdown-item">
                             <i class="fa fa-user"></i> My profile
                         </a>
-
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>

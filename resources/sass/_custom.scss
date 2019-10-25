@@ -105,14 +105,13 @@ footer{
     top: -.6em;
     left: -.5em;
     background:#ea7308; 
-    width: 20px;
+    width: 20px !important;
     height: 20px;
-    border-radius: 50%;
     color: #ffffff;
-    font-size: 9px;
+    font-size: 10px;
     text-align: center;
-    padding: 1px 2px;
     }
+
     span.count-notification.green{
     background:#ea7308;
     }

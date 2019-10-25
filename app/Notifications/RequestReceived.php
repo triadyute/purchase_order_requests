@@ -42,7 +42,8 @@ class RequestReceived extends Notification implements ShouldQueue
     public function toDatabase($notifiable)
     {
         return [
-            'message' => 'this is a test'
+            'message' => 'New PO request from ' . $this->user->name,
+            'url' => '/purchase-order-request'.'/'.$this->purchaseOrderRequest->id
         ];
     }
 
@@ -50,7 +51,8 @@ class RequestReceived extends Notification implements ShouldQueue
     {
         return [
             'data' =>[
-                'message' => 'This is a test'
+                'message' =>'New PO request from ' . $this->user->name,
+                'url' => '/purchase-order-request'.'/'.$this->purchaseOrderRequest->id
                     ]
                ];
     }
