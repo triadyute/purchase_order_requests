@@ -37,13 +37,27 @@
 <hr>
 <div class="row">
     <div class="col-md-4">
-        <p><strong>Manager Approval:</strong><br>{{$purchaseOrderRequest->approved_by_manager}} @if($manager){{" - " . $manager->name}}@endif</p>
+        <p><strong>Manager Approval:</strong><br>
+            {{$purchaseOrderRequest->approved_by_manager}} 
+            @if($manager)
+            {{" - " . $manager->name}}<br>
+            on {{\Carbon\Carbon::parse($purchaseOrderRequest->approved_by_manager_on)->toFormattedDateString()}}
+            @endif</p>
     </div>
     <div class="col-md-4">
-        <p><strong>Senior Manager Approval:</strong><br>{{$purchaseOrderRequest->approved_by_senior_manager}}  @if($seniorManager){{" - " . $seniorManager->name}}@endif</p>
+        <p><strong>Senior Manager Approval:</strong><br>
+            {{$purchaseOrderRequest->approved_by_senior_manager}} 
+            @if($seniorManager)
+            {{" - " . $seniorManager->name}}<br>
+            on {{\Carbon\Carbon::parse($purchaseOrderRequest->approved_by_senior_manager_on)->toFormattedDateString()}}
+            @endif</p>
     </div>
     <div class="col-md-4">
-        <p><strong>Admin Approval</strong><br>{{$purchaseOrderRequest->approved_by_admin}}  @if($admin){{" - " . $admin->name}}@endif</p>
+        <p><strong>Admin Approval</strong><br>
+            {{$purchaseOrderRequest->approved_by_admin}}
+            @if($admin){{" - " . $admin->name}}<br>
+            on {{\Carbon\Carbon::parse($purchaseOrderRequest->approved_by_admin_on)->toFormattedDateString()}}
+            @endif</p>
     </div>
 </div>
 @if (Auth::user()->hasManagerRole())

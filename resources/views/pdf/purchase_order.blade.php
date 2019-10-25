@@ -59,7 +59,8 @@
             @if ($data->user->hasManagerRole() || $data->user->hasSeniorManagerRole()|| $data->user->hasAdminRole())
             {{'N/A'}}
             @else
-            {{$data->approved_by_manager}}
+            {{$data->approved_by_manager}}<br>
+            on {{\Carbon\Carbon::parse($purchaseOrderRequest->approved_by_manager_on)->toFormattedDateString()}}
             @endif
         </p>
         <p style="font-family:sans-serif;">
@@ -67,7 +68,8 @@
             @if ($data->user->hasSeniorManagerRole()|| $data->user->hasAdminRole())
             {{'N/A'}}
             @else
-            {{$data->approved_by_senior_manager}}
+            {{$data->approved_by_senior_manager}}<br>
+            on {{\Carbon\Carbon::parse($purchaseOrderRequest->approved_by_senior_manager_on)->toFormattedDateString()}}
             @endif
         </p>
         <p style="font-family:sans-serif;">
@@ -75,7 +77,8 @@
             @if ($data->user->hasAdminRole())
             {{'N/A'}}
             @else
-            {{$data->approved_by_admin}}
+            {{$data->approved_by_admin}}<br>
+            on {{\Carbon\Carbon::parse($purchaseOrderRequest->approved_by_admin_on)->toFormattedDateString()}}
             @endif
         </p>
     </div>

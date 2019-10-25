@@ -133,6 +133,13 @@ class PurchaseOrderRequestController extends Controller
      */
     public function show(PurchaseOrderRequest $purchaseOrderRequest)
     {   
+        if(Auth::user()->hasManagerRole() || Auth::user()->hasSeniorManagerRole() || Auth::user()->hasAdminRole()){
+            foreach(Auth::user()->unreadNotifications as $notification){
+                if($notification->data['id'] == $purchaseOrderRequest->id){
+                    $notification->markAsRead();
+                }
+            }
+        }
         $manager = User::find($purchaseOrderRequest->manager_id);
         $seniorManager = User::find($purchaseOrderRequest->senior_manager_id);
         $admin = User::find($purchaseOrderRequest->admin_id);

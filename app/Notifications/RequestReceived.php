@@ -43,7 +43,8 @@ class RequestReceived extends Notification implements ShouldQueue
     {
         return [
             'message' => 'New PO request from ' . $this->user->name,
-            'url' => '/purchase-order-request'.'/'.$this->purchaseOrderRequest->id
+            'url' => '/purchase-order-request'.'/'.$this->purchaseOrderRequest->id,
+            'id' => $this->purchaseOrderRequest->id
         ];
     }
 
@@ -52,7 +53,8 @@ class RequestReceived extends Notification implements ShouldQueue
         return [
             'data' =>[
                 'message' =>'New PO request from ' . $this->user->name,
-                'url' => '/purchase-order-request'.'/'.$this->purchaseOrderRequest->id
+                'url' => '/purchase-order-request'.'/'.$this->purchaseOrderRequest->id,
+                'id' => $this->purchaseOrderRequest->id
                     ]
                ];
     }
